@@ -7,13 +7,12 @@ export const login = async (req, res) => {
 
   const userFound = await user.findOne({ where: { email } });
 
-  if (!userFound)
-    return res.status(404).json(["We were unable to find this account."]);
+  if (!userFound) return res.status(400).json(["Credenciales invalidas."]);
 
   try {
     const match = await cmpPass(passw, userFound.passw);
 
-    if (!match) return res.status(400).json(["Invalid credentials."]);
+    if (!match) return res.status(400).json(["Credenciales invalidas."]);
 
     const token = genToken(userFound);
 
