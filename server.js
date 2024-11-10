@@ -10,7 +10,13 @@ const server = express();
 const puerto = 4000;
 const ip = "localhost";
 
-server.use(cors());
+server.use(
+  cors({
+    origin: `http://${ip}:5173`,
+    credentials: true,
+  })
+);
+
 server.use(express.json());
 server.use(cookieParser());
 

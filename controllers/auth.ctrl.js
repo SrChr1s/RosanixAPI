@@ -1,5 +1,10 @@
 import { user } from "../models/user.model.js";
-import { cmpPass, genHash, genToken } from "../services/auth.services.js";
+import {
+  cmpPass,
+  genHash,
+  genToken,
+  verToken,
+} from "../services/auth.services.js";
 
 export const login = async (req, res) => {
   const { email, passw } = req.body;
@@ -17,7 +22,12 @@ export const login = async (req, res) => {
 
     res.cookie("access_token", token);
 
-    res.sendStatus(204);
+    res.status(200).json({
+      name: userFound.name,
+      email: userFound.email,
+      role: userFound.role,
+      createdAt: userFound.createdAt,
+    });
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -43,7 +53,12 @@ export const register = async (req, res) => {
 
     res.cookie("access_token", token);
 
-    res.sendStatus(204);
+    res.status(200).json({
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+      createdAt: newUser.createdAt,
+    });
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -53,4 +68,25 @@ export const register = async (req, res) => {
 export const logout = async (req, res) => {
   res.cookie("access_token", "", { expires: new Date(0) });
   res.sendStatus(204);
+};
+
+export const verify = async (req, res) => {
+  const { access_token } = req.cookies;
+
+  if (!access_token) return res.status(401).json("Token missing.");
+
+  const validToken = verToken(access_token);
+
+  if (!validToken) return res.status(498).json("Token invalid.");
+
+  const userFound = await user.findByPk(validToken.id);
+
+  if (!userFound) return res.status(401).json("Unauthorized");
+
+  res.status(200).json({
+    name: userFound.name,
+    email: userFound.email,
+    role: userFound.role,
+    createdAt: userFound.createdAt,
+  });
 };
