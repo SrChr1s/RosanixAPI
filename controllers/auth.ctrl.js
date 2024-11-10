@@ -1,6 +1,5 @@
 import { user } from "../models/user.model.js";
 import { cmpPass, genHash, genToken } from "../services/auth.services.js";
-import { Op } from "sequelize";
 
 export const login = async (req, res) => {
   const { email, passw } = req.body;
@@ -14,7 +13,7 @@ export const login = async (req, res) => {
 
     if (!match) return res.status(400).json(["Credenciales invalidas."]);
 
-    const token = genToken(userFound);
+    const token = await genToken(userFound);
 
     res.cookie("access_token", token);
 
@@ -28,12 +27,10 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   const { name, email, passw } = req.body;
 
-  const userFound = await user.findOne({
-    where: { [Op.or]: [{ email }] },
-  });
+  const userFound = await user.findOne({ where: { email } });
 
   if (userFound)
-    return res.status(400).json(["This account is already registered."]);
+    return res.status(400).json(["Esta cuenta ya se encuentra registrada."]);
 
   try {
     const newUser = await user.create({
@@ -54,6 +51,6 @@ export const register = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  res.cookie("access_token", null, { expires: new Date(0) });
+  res.cookie("access_token", "", { expires: new Date(0) });
   res.sendStatus(204);
 };

@@ -28,7 +28,7 @@ export const user = mysql.define(
       allowNull: false,
       defaultValue: "usuario",
     },
-    creation_date: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,

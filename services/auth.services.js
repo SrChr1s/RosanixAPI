@@ -2,18 +2,24 @@ import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 
 export const genToken = async ({ id, name, email, role }) =>
-  jwt.sign(
-    {
-      id,
-      name,
-      email,
-      role,
-    },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: "12h" }
-  );
+  new Promise((resolve, reject) => {
+    jwt.sign(
+      {
+        id,
+        name,
+        email,
+        role,
+      },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "12h" },
+      (err, tkn) => {
+        if (err) reject(err);
+        resolve(tkn);
+      }
+    );
+  });
 
-export const verToken = async (token) =>
+export const verToken = (token) =>
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, dec) =>
     err ? null : dec
   );

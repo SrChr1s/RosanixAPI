@@ -1,11 +1,11 @@
 import { verToken } from "../services/auth.services.js";
 
 export const authentication = (req, res, next) => {
-  const { token } = req.cookies;
+  const { access_token } = req.cookies;
 
-  if (!token) return res.status(401).json("Token missing.");
+  if (!access_token) return res.status(401).json("Token missing.");
 
-  const validToken = verToken(token);
+  const validToken = verToken(access_token);
 
   if (!validToken) return res.status(498).json("Token invalid.");
 
