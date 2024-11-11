@@ -1,5 +1,5 @@
 import { mysql } from "../config/database.cfg.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 
 export const user = mysql.define(
   "users",
@@ -31,7 +31,7 @@ export const user = mysql.define(
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
   },
   { timestamps: false }

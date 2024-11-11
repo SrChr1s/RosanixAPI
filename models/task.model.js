@@ -1,5 +1,5 @@
 import { mysql } from "../config/database.cfg.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 
 export const task = mysql.define(
   "tasks",
@@ -21,7 +21,7 @@ export const task = mysql.define(
     createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
     expiresIn: {
       type: DataTypes.DATE,
@@ -44,7 +44,6 @@ export const task = mysql.define(
         model: "users",
         key: "id",
       },
-      onDelete: "SET NULL", // ???
     },
   },
   { timestamps: false }
