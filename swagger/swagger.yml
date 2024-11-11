@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Rosanix API
-  description: API para la gestión de tareas en la app Rosanix
+  description: Rosanix API es una API RESTful diseñada para gestionar tareas de manera eficiente. Permite a los usuarios crear, leer, actualizar y eliminar tareas mediante un sistema fácil de usar y seguro. La API está estructurada en torno a la autenticación basada en JSON Web Tokens (JWT), lo que garantiza que solo los usuarios autenticados puedan acceder a sus datos personales y realizar operaciones sobre sus tareas.
   version: 1.0.0
 
 servers:
