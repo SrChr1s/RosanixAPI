@@ -1,0 +1,258 @@
+openapi: 3.0.3
+info:
+  title: Rosanix API
+  description: API para la gestión de tareas en la app Rosanix
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:4000
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Auth
+    description: Autenticación
+  - name: Usuarios
+    description: Gestión propia del usuario
+  - name: Tareas
+    description: CRUD de tareas
+
+paths:
+  /api/login:
+    post:
+      tags:
+        - Auth
+      summary: Iniciar sesión en la aplicación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              email: "email@email.com"
+              passw: "password123"
+      responses:
+        "200":
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "email@mail.com"
+                role: "usuario"
+                createdAt: "2024-11-10T12:00:00Z"
+        "400":
+          description: Credenciales Invalidas
+        "500":
+          description: Error del servidor
+  /api/register:
+    post:
+      tags:
+        - Auth
+      summary: Registrate en la aplicación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: "John Doe"
+              email: "email@email.com"
+              passw: "password123"
+      responses:
+        "200":
+          description: Registro realizado con éxito
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "email@mail.com"
+                role: "usuario"
+                createdAt: "2024-11-10T12:00:00Z"
+        "400":
+          description: Cuenta ya registrada
+        "500":
+          description: Error del servidor
+  /api/logout:
+    post:
+      tags:
+        - Auth
+      summary: Cierra la sesión
+      responses:
+        "204":
+          description: Cierre de sesión realizado con éxito
+  /api/home:
+    get:
+      tags:
+        - Tareas
+      summary: Obtener todas las tareas del usuario
+      responses:
+        "200":
+          description: Lista de tareas
+          content:
+            application/json:
+              example:
+                id: 1
+                title: "Nueva Tarea"
+                descr: "Descripción de la tarea"
+                createdAt: "2024-11-10T12:00:00Z"
+                expiresIn: "2024-11-10T12:00:00Z"
+                state: "pendiente"
+                priority: "media"
+                userId: 1
+        "404":
+          description: Sin tareas creadas
+        "401":
+          description: No autorizado
+        "498":
+          description: Token inválido
+
+    post:
+      tags:
+        - Tareas
+      summary: Crear una nueva tarea
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              title: "Nueva Tarea"
+              descr: "Descripción de la tarea"
+              expiresIn: "2024-11-10T12:00:00Z"
+              state: "pendiente"
+              priority: "media"
+      responses:
+        "200":
+          description: Tarea creada
+          content:
+            application/json:
+              example:
+                id: 1
+                title: "Nueva Tarea"
+                descr: "Descripción de la tarea"
+                createdAt: "2024-11-10T12:00:00Z"
+                expiresIn: "2024-11-10T12:00:00Z"
+                state: "pendiente"
+                priority: "media"
+                userId: 1
+        "401":
+          description: No autorizado
+        "498":
+          description: Token inválido
+        "500":
+          description: Error del servidor
+
+  /api/home/tarea/{id}:
+    get:
+      tags:
+        - Tareas
+      summary: Obtener datos de una tarea específica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Datos de la tarea
+          content:
+            application/json:
+              example:
+                id: 1
+                title: "Nueva Tarea"
+                descr: "Descripción de la tarea"
+                createdAt: "2024-11-10T12:00:00Z"
+                expiresIn: "2024-11-10T12:00:00Z"
+                state: "pendiente"
+                priority: "media"
+                userId: 1
+        "401":
+          description: No autorizado
+        "404":
+          description: Tarea no encontrada
+        "498":
+          description: Token inválido
+
+    put:
+      tags:
+        - Tareas
+      summary: Modificar datos de una tarea
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              title: "Nueva Tarea"
+              descr: "Descripción de la tarea"
+              expiresIn: "2024-11-10T12:00:00Z"
+              state: "pendiente"
+              priority: "media"
+      responses:
+        "200":
+          description: Tarea actualizada
+          content:
+            application/json:
+              example:
+                id: 1
+                title: "Nueva Tarea"
+                descr: "Descripción de la tarea"
+                createdAt: "2024-11-10T12:00:00Z"
+                expiresIn: "2024-11-10T12:00:00Z"
+                state: "pendiente"
+                priority: "media"
+                userId: 1
+        "401":
+          description: No autorizado
+        "404":
+          description: Tarea no encontrada
+        "498":
+          description: Token inválido
+        "500":
+          description: Error del servidor
+
+    delete:
+      tags:
+        - Tareas
+      summary: Borrar una tarea
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Tarea eliminada con éxito
+        "401":
+          description: No autorizado
+        "404":
+          description: Tarea no encontrada
+        "498":
+          description: Token inválido
+        "500":
+          description: Error del servidor
+
+  /api/profile:
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener todos los datos del usuario
+      responses:
+        "200":
+          description: Datos del usuario
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "email@mail.com"
+                createdAt: "2024-11-10T12:00:00Z"
+        "404":
+          description: Usuario no encontrado
+        "401":
+          description: No autorizado
+        "498":
+          description: Token inválido

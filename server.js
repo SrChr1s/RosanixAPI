@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import swaggerUI from "swagger-ui-express";
+import specs from "./swagger/swagger.js";
 import { mysql } from "./config/database.cfg.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { usersRouter } from "./routes/users.routes.js";
@@ -35,6 +37,8 @@ server.use("/api", usersRouter);
 server.use("/api", tasksRouter);
 
 await mysql.sync();
+
+server.use("/api/v1/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 server.listen(puerto, ip, () => {
   console.log(`\nServer listening on http://localhost:${puerto}/api/\n`);
