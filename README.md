@@ -1,75 +1,124 @@
-## Descripción del Proyecto
+# Rosanix API
 
-Rosanix es una plataforma web diseñada para la compra de componentes informáticos y el armado de computadoras personales. Este proyecto consiste en una API que facilita la interacción entre el frontend y la base de datos, permitiendo realizar operaciones CRUD y gestionar recursos de manera eficiente.
+![Rosanix Logo](/assets/rosanix-logo.png)
 
-## Tecnologías Utilizadas
+API para la aplicación de gestión de tareas Rosanix, desarrollada con Node.js y Express. Esta API permite la autenticación de usuarios y la gestión de tareas a través de un CRUD completo.
 
-- **Node.js**: Entorno de ejecución para JavaScript en el servidor.
-- **Express**: Framework web para Node.js que simplifica la creación de aplicaciones.
-- **MySQL**: Sistema de gestión de bases de datos relacional.
-- **Sequelize**: ORM para Node.js que facilita la interacción con bases de datos SQL.
+## Tabla de Contenidos
 
-## Estructura del Proyecto
+- [Descripción](#descripción)
+- [Características](#características)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Documentación](#documentación)
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Licencia](#licencia)
+- [Equipo de Desarrollo](#equipo-de-desarrollo)
 
-```
-/rosanix-api
-├── /config
-│   └── config.js        # Configuración de la base de datos y otros parámetros.
-├── /controllers
-│   └── [controladores].js # Controladores para manejar la lógica de negocio.
-├── /models
-│   └── [modelos].js      # Definición de modelos de datos utilizando Sequelize.
-├── /routes
-│   └── [rutas].js        # Definición de las rutas de la API.
-├── /middlewares
-│   └── [middlewares].js   # Funciones middleware para la API.
-├── /utils
-│   └── [utilidades].js    # Funciones de utilidad.
-├── app.js                # Archivo principal de la aplicación.
-└── package.json          # Dependencias y scripts del proyecto.
-```
+## Descripción
+
+Rosanix API es la base de una aplicación de gestión de tareas diseñada para facilitar la organización y el seguimiento de tareas personales. La API proporciona funcionalidades de autenticación, autorización y CRUD de tareas. Es mantenida por el grupo de desarrollo **Caleidoscopio**.
+
+## Características
+
+- **Autenticación y Autorización**: Gestionada con JWT y cookies.
+- **Gestión de Tareas**: CRUD completo para crear, leer, actualizar y eliminar tareas.
+- **Validación de Datos**: Uso de Zod para la validación de esquemas de datos.
+- **ORM**: Sequelize como ORM para interactuar con una base de datos MySQL.
+- **Documentación**: Documentada con Swagger para facilitar la integración y el uso.
 
 ## Instalación
 
-1. Clona el repositorio:
+1. Clona el repositorio desde GitHub.
 
    ```bash
-   git clone https://github.com/tu_usuario/rosanix-api.git
+   git clone https://github.com/srchr1s/rosanixapi.git
    ```
 
-2. Navega al directorio del proyecto:
-
+2. Ingresa al directorio del proyecto.
    ```bash
-   cd rosanix-api
+   cd rosanixapi
    ```
-
-3. Instala las dependencias:
-
+3. Instala las dependencias.
    ```bash
    npm install
    ```
-
-4. Inicia el servidor:
+4. Crea un archivo `.env` en la raíz del proyecto y configura tus variables de entorno.
+5. Inicia la aplicación.
    ```bash
    npm start
    ```
 
-## Rutas de la API
+## Uso
 
-| Método | Ruta                 | Descripción                        |
-| ------ | -------------------- | ---------------------------------- |
-| GET    | `/api/[recurso]`     | Obtener todos los [recursos].      |
-| GET    | `/api/[recurso]/:id` | Obtener un [recurso] específico.   |
-| POST   | `/api/[recurso]`     | Crear un nuevo [recurso].          |
-| PUT    | `/api/[recurso]/:id` | Actualizar un [recurso] existente. |
-| DELETE | `/api/[recurso]/:id` | Eliminar un [recurso].             |
+La API está pensada para servir como backend de la aplicación de gestión de tareas Rosanix. Los endpoints principales incluyen:
 
-## Futuras Mejoras
+- `GET /home`: Obtiene todas las tareas del usuario autenticado.
+- `GET /home/tarea/:id`: Obtiene los detalles de una tarea específica.
+- `POST /home`: Crea una nueva tarea.
+- `PUT /home/tarea/:id`: Actualiza una tarea existente.
+- `DELETE /home/tarea/:id`: Elimina una tarea.
 
-- **Integración con otras tecnologías**: A medida que el proyecto crezca, se pueden considerar la incorporación de nuevas tecnologías como [indicar tecnologías futuras, e.g., GraphQL, Redis, etc.].
-- **Autenticación y Autorización**: Implementar mecanismos de autenticación y autorización para proteger las rutas de la API.
-- **Documentación de la API**: Generar documentación interactiva utilizando herramientas como Swagger o Postman.
+## Estructura del Proyecto
+
+```plaintext
+/rosanixapi
+├── config/
+│   ├── database.cfg.js
+│   └── rosanix_db.sql
+├── controllers/
+│   ├── auth.ctrl.js
+│   ├── tasks.ctrl.js
+│   └── users.ctrl.js
+├── middlewares/
+│   ├── auth.middle.js
+│   └── val.schema.js
+├── models/
+│   ├── task.model.js
+│   └── user.model.js
+├── routes/
+│   ├── auth.routes.js
+│   ├── tasks.routes.js
+│   └── users.routes.js
+├── schemas/
+│   ├── auth.schemas.js
+│   └── task.schemas.js
+├── services/
+│   └── auth.services.js
+├── swagger/
+│   ├── swagger.js
+│   └── swagger.yml
+├── .env
+├── LICENSE.txt
+├── README.md
+└── server.js
+```
+
+## Documentación
+
+La documentación de la API está disponible en formato Swagger. Una vez que la API esté en funcionamiento, puedes acceder a la documentación en:
+
+```
+http://localhost:4000/api/v1/docs
+```
+
+Swagger permite ver y probar los endpoints de la API en un entorno visual y fácil de usar.
+
+## Tecnologías Utilizadas
+
+- **Node.js** y **Express** como base del servidor.
+- **Sequelize** para interactuar con la base de datos MySQL.
+- **JWT** y **cookie-parser** para autenticación y gestión de sesiones.
+- **bcryptjs** para el hash de contraseñas.
+- **Zod** para la validación de datos de entrada.
+- **dotenv** para la configuración de variables de entorno.
+- **Swagger** para la documentación de la API.
 
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+## Equipo de Desarrollo
+
+**Caleidoscopio** - Un equipo dedicado al desarrollo de aplicaciones prácticas y útiles.
