@@ -62,7 +62,7 @@ export const register = async (req, res) => {
       email: newUser.email,
       role: newUser.role,
       createdAt: newUser.createdAt,
-      active: 0,
+      active: newUser.active,
     });
   } catch (err) {
     console.log(err);
@@ -93,6 +93,7 @@ export const verify = async (req, res) => {
     email: userFound.email,
     role: userFound.role,
     createdAt: userFound.createdAt,
+    active: userFound.active,
   });
 };
 
@@ -113,13 +114,7 @@ export const confirmEmail = async (req, res) => {
     if (!userActivated)
       return res.status(404).json(["No hemos encontrado esta cuenta"]);
 
-    res.status(200).json({
-      name: userActivated.name,
-      email: userActivated.email,
-      role: userActivated.role,
-      createdAt: userActivated.createdAt,
-      active: 1,
-    });
+    res.redirect(301, "http://localhost:5173/login");
   } catch (err) {
     console.log(err);
     res.status(500);

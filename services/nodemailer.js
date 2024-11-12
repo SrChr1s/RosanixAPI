@@ -268,7 +268,7 @@ export const sendConfirmationEmail = async (email, code) => {
                                     style="border-radius: 6px"
                                   >
                                     <a
-                                      href="http://localhost:4000/confirm-account/${code}"
+                                      href="http://localhost:4000/api/confirm-account/${code}"
                                       target="_blank"
                                       style="
                                         display: inline-block;
@@ -308,7 +308,7 @@ export const sendConfirmationEmail = async (email, code) => {
                           Sí el botón no te funciona, copia y pega el siguiente enlace
                           en tu navegador de confianza:
                           <a
-                            href="http://localhost:4000/confirm-account/${code}"
+                            href="http://localhost:4000/api/confirm-account/${code}"
                             target="_blank"
                             >https://rosanix.com/confirm-account</a
                           >

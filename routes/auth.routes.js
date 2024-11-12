@@ -19,6 +19,6 @@ router.post("/logout", logout);
 
 router.get("/auth/verify-token", verify);
 
-router.post("/confirm-account/:uuid", confirmEmail);
+router.get("/confirm-account/:uuid", confirmEmail);
 
 export { router as authRouter };

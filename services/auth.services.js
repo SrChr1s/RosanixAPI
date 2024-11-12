@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 
-export const genToken = async ({ id, name, email, role }) =>
+export const genToken = async ({ id, name, email, role, active }) =>
   new Promise((resolve, reject) => {
     jwt.sign(
       {
@@ -9,6 +9,7 @@ export const genToken = async ({ id, name, email, role }) =>
         name,
         email,
         role,
+        active,
       },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "12h" },
