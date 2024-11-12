@@ -12,14 +12,14 @@ import { taskSchema } from "../schemas/task.schemas.js";
 
 const router = Router();
 
-router.get("/home", authentication, getAll);
+router.get("/tasks", authentication, getAll);
 
-router.get("/home/tarea/:id", authentication, getOne);
+router.get("/tasks/:id", authentication, getOne);
 
-router.post("/home", authentication, valSchema(taskSchema), createOne);
+router.post("/tasks", authentication, valSchema(taskSchema), createOne);
 
-router.put("/home/tarea/:id", authentication, valSchema(taskSchema), updateOne);
+router.put("/tasks/:id", authentication, valSchema(taskSchema), updateOne);
 
-router.delete("/home/tarea/:id", authentication, deleteOne);
+router.delete("/tasks/:id", authentication, deleteOne);
 
 export { router as tasksRouter };
