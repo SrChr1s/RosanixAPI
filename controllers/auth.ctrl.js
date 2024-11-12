@@ -5,6 +5,7 @@ import {
   genToken,
   verToken,
 } from "../services/auth.services.js";
+import { sendConfirmationEmail } from "../services/nodemailer.js";
 
 export const login = async (req, res) => {
   const { email, passw } = req.body;
@@ -27,6 +28,7 @@ export const login = async (req, res) => {
       email: userFound.email,
       role: userFound.role,
       createdAt: userFound.createdAt,
+      active: userFound.active,
     });
   } catch (err) {
     console.log(err);
@@ -49,6 +51,8 @@ export const register = async (req, res) => {
       passw: await genHash(passw),
     });
 
+    sendConfirmationEmail(email, newUser.codeEmail);
+
     const token = await genToken(newUser);
 
     res.cookie("access_token", token);
@@ -58,6 +62,7 @@ export const register = async (req, res) => {
       email: newUser.email,
       role: newUser.role,
       createdAt: newUser.createdAt,
+      active: 0,
     });
   } catch (err) {
     console.log(err);
@@ -89,4 +94,34 @@ export const verify = async (req, res) => {
     role: userFound.role,
     createdAt: userFound.createdAt,
   });
+};
+
+export const confirmEmail = async (req, res) => {
+  try {
+    const userActivated = await user.update(
+      {
+        active: 1,
+        codeEmail: null,
+      },
+      {
+        where: {
+          codeEmail: req.params.uuid,
+        },
+      }
+    );
+
+    if (!userActivated)
+      return res.status(404).json(["No hemos encontrado esta cuenta"]);
+
+    res.status(200).json({
+      name: userActivated.name,
+      email: userActivated.email,
+      role: userActivated.role,
+      createdAt: userActivated.createdAt,
+      active: 1,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
 };

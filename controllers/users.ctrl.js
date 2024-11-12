@@ -1,13 +1,31 @@
 import { user } from "../models/user.model.js";
 
-export const profile = async (req, res) => {
-  const userFound = await user.findByPk(req.user.id);
+export const updateInfo = async (req, res) => {
+  const { name, email } = req.body;
 
-  if (!userFound) return res.status(404).json(["Usuario no encontrado!"]);
+  try {
+    const userUpdated = await user.update(
+      {
+        name,
+        email,
+      },
+      {
+        where: {
+          id: req.user.id,
+        },
+      }
+    );
 
-  return res.status(200).json({
-    name: userFound.name,
-    email: userFound.email,
-    createdAt: userFound.createdAt,
-  });
+    if (!userUpdated) return res.status(400);
+
+    res.status(200).json({
+      name: userUpdated.name,
+      email: userUpdated.email,
+      role: userUpdated.role,
+      createdAt: userUpdated.createdAt,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
 };

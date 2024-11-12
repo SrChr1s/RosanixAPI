@@ -36,6 +36,9 @@ server.use("/api", authRouter);
 server.use("/api", usersRouter);
 server.use("/api", tasksRouter);
 
+// Rehacer la db ***DROPEA TODO***
+// await mysql.sync({ force: true });
+
 await mysql.sync();
 
 server.use("/api/v1/docs", swaggerUI.serve, swaggerUI.setup(specs));

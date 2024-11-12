@@ -33,6 +33,16 @@ export const user = mysql.define(
       allowNull: false,
       defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    codeEmail: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: true,
+    },
   },
   { timestamps: false }
 );
