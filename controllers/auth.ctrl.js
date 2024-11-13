@@ -96,27 +96,3 @@ export const verify = async (req, res) => {
     active: userFound.active,
   });
 };
-
-export const confirmEmail = async (req, res) => {
-  try {
-    const userActivated = await user.update(
-      {
-        active: 1,
-        codeEmail: null,
-      },
-      {
-        where: {
-          codeEmail: req.params.uuid,
-        },
-      }
-    );
-
-    if (!userActivated)
-      return res.status(404).json(["No hemos encontrado esta cuenta"]);
-
-    res.redirect(301, "http://localhost:5173/login");
-  } catch (err) {
-    console.log(err);
-    res.status(500);
-  }
-};
