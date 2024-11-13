@@ -54,11 +54,11 @@ Rosanix API es la base de una aplicación de gestión de tareas diseñada para f
 
 La API está pensada para servir como backend de la aplicación de gestión de tareas Rosanix. Los endpoints principales incluyen:
 
-- `GET /home`: Obtiene todas las tareas del usuario autenticado.
-- `GET /home/tarea/:id`: Obtiene los detalles de una tarea específica.
-- `POST /home`: Crea una nueva tarea.
-- `PUT /home/tarea/:id`: Actualiza una tarea existente.
-- `DELETE /home/tarea/:id`: Elimina una tarea.
+- `GET /tasks`: Obtiene todas las tareas del usuario autenticado.
+- `GET /tasks/:id`: Obtiene los detalles de una tarea específica.
+- `POST /tasks`: Crea una nueva tarea.
+- `PUT /tasks/:id`: Actualiza una tarea existente.
+- `DELETE /tasks/:id`: Elimina una tarea.
 
 ## Estructura del Proyecto
 
