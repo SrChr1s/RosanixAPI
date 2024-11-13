@@ -64,6 +64,29 @@ export const updateOne = async (req, res) => {
   }
 };
 
+export const completeOne = async (req, res) => {
+  try {
+    const taskUpdated = await task.update(
+      {
+        state: "completada",
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    if (!taskUpdated)
+      return res.status(404).json(["No se han encontrado esta tarea"]);
+
+    res.status(200).json(taskUpdated);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+  }
+};
+
 export const deleteOne = async (req, res) => {
   try {
     const taskDeleted = await task.destroy({ where: { id: req.params.id } });
