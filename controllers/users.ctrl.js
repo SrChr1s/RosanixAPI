@@ -43,7 +43,7 @@ export const updateInfo = async (req, res) => {
         }
       );
 
-      if (!userUpdated) return res.status(400);
+      if (!userUpdated) return res.status(404).json(["Usuario no encontrado"]);
 
       return res.status(200).json({
         name: userUpdated.name,
@@ -70,7 +70,7 @@ export const updateInfo = async (req, res) => {
       }
     );
 
-    if (!userUpdated) return res.status(400);
+    if (!userUpdated) return res.status(404).json(["Usuario no encontrado"]);
 
     res.status(200).json({
       name: userUpdated.name,

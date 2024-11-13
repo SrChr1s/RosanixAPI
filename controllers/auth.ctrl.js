@@ -86,7 +86,7 @@ export const verify = async (req, res) => {
 
   const userFound = await user.findByPk(validToken.id);
 
-  if (!userFound) return res.status(401).json("Unauthorized");
+  if (!userFound) return res.status(403).json("Unauthorized");
 
   res.status(200).json({
     name: userFound.name,

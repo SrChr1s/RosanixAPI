@@ -18,13 +18,13 @@ export const getOne = async (req, res) => {
 };
 
 export const createOne = async (req, res) => {
-  const { title, descr, exp, priority } = req.body;
+  const { title, descr, expiresIn, priority } = req.body;
 
   try {
     const newTask = await task.create({
       title,
       descr,
-      expiresIn: exp,
+      expiresIn,
       priority,
       userId: req.user.id,
     });

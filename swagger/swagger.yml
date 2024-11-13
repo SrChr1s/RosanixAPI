@@ -15,6 +15,8 @@ tags:
     description: Gestión propia del usuario
   - name: Tareas
     description: CRUD de tareas
+  - name: Admin
+    description: Gestión interna del sistema
 
 paths:
   /api/login:
@@ -39,6 +41,7 @@ paths:
                 email: "email@mail.com"
                 role: "usuario"
                 createdAt: "2024-11-10T12:00:00Z"
+                active: 1
         "400":
           description: Credenciales Invalidas
         "500":
@@ -66,6 +69,7 @@ paths:
                 email: "email@mail.com"
                 role: "usuario"
                 createdAt: "2024-11-10T12:00:00Z"
+                active: 0
         "400":
           description: Cuenta ya registrada
         "500":
@@ -78,7 +82,29 @@ paths:
       responses:
         "204":
           description: Cierre de sesión realizado con éxito
-  /api/home:
+  /api/auth/verify-token:
+    get:
+      tags:
+        - Auth
+      summary: Verifica que tanto el token sea válido como que contenga un usuario real
+      responses:
+        "200":
+          description: Token verificado y usuario real
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "email@mail.com"
+                role: "usuario"
+                createdAt: "2024-11-10T12:00:00Z"
+                active: 1
+        "401":
+          description: Token faltante
+        "403":
+          description: No autorizado
+        "498":
+          description: Token inválido
+  /api/tasks:
     get:
       tags:
         - Tareas
@@ -116,7 +142,6 @@ paths:
               title: "Nueva Tarea"
               descr: "Descripción de la tarea"
               expiresIn: "2024-11-10T12:00:00Z"
-              state: "pendiente"
               priority: "media"
       responses:
         "200":
@@ -139,7 +164,7 @@ paths:
         "500":
           description: Error del servidor
 
-  /api/home/tarea/{id}:
+  /api/tasks/{id}:
     get:
       tags:
         - Tareas
@@ -189,8 +214,40 @@ paths:
               title: "Nueva Tarea"
               descr: "Descripción de la tarea"
               expiresIn: "2024-11-10T12:00:00Z"
-              state: "pendiente"
               priority: "media"
+      responses:
+        "200":
+          description: Tarea actualizada
+          content:
+            application/json:
+              example:
+                id: 1
+                title: "Nueva Tarea"
+                descr: "Descripción de la tarea"
+                createdAt: "2024-11-10T12:00:00Z"
+                expiresIn: "2024-11-10T12:00:00Z"
+                state: "pendiente"
+                priority: "media"
+                userId: 1
+        "401":
+          description: No autorizado
+        "404":
+          description: Tarea no encontrada
+        "498":
+          description: Token inválido
+        "500":
+          description: Error del servidor
+
+    patch:
+      tags:
+        - Tareas
+      summary: Marcar como completada una tarea
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Tarea actualizada
@@ -236,23 +293,179 @@ paths:
         "500":
           description: Error del servidor
 
-  /api/profile:
+  /api/confirm-account/{uuid}:
     get:
       tags:
         - Usuarios
-      summary: Obtener todos los datos del usuario
+      summary: Confirmar email
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "301":
+          description: Redirección al front
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error del servidor
+
+  /api/change-email/{userId}/{newEmail}:
+    get:
+      tags:
+        - Usuarios
+      summary: Cambiar email
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: newEmail
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "301":
+          description: Redirección al front
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error del servidor
+
+  /api/user:
+    put:
+      tags:
+        - Usuarios
+      summary: Modificar nombre y/o email
+      parameters:
+        - name: id
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: "John Doe"
+              email: "johndoe@email.com"
       responses:
         "200":
-          description: Datos del usuario
+          description: Usuario actualizado
           content:
             application/json:
               example:
                 name: "John Doe"
-                email: "email@mail.com"
+                email: "johndoe@email.com"
+                role: "usuario"
                 createdAt: "2024-11-10T12:00:00Z"
         "404":
           description: Usuario no encontrado
-        "401":
+        "500":
+          description: Error del servidor
+
+  /api/user/change-password:
+    put:
+      tags:
+        - Usuarios
+      summary: Cambiar contraseña
+      parameters:
+        - name: id
+          in: header
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              currentPassw: "password123"
+              newPassw: "newPassword123"
+      responses:
+        "200":
+          description: Contraseña cambiada exitosamente
+        "400":
+          description: Contraseña incorrecta
+        "500":
+          description: Error del servidor
+
+  /api/admin/users:
+    get:
+      tags:
+        - Admin
+      summary: Obtener todos los usuarios
+      responses:
+        "200":
+          description: Lista de Usuarios
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "johndoe@email.com"
+                role: "usuario"
+                createdAt: "2024-11-10T12:00:00Z"
+        "403":
           description: No autorizado
-        "498":
-          description: Token inválido
+        "404":
+          description: No existen usuarios
+        "500":
+          description: Error del servidor
+
+    post:
+      tags:
+        - Admin
+      summary: Crea un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: "John Doe"
+              email: "johndoe@email.com"
+              passw: "password123"
+              role: "usuario"
+      responses:
+        "200":
+          description: Lista de Usuarios
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "johndoe@email.com"
+                role: "usuario"
+                createdAt: "2024-11-10T12:00:00Z"
+        "400":
+          description: El usuario ya existe
+        "403":
+          description: No autorizado
+        "500":
+          description: Error del servidor
+
+  /api/admin/tasks:
+    get:
+      tags:
+        - Admin
+      summary: Obtener todas las tareas
+      responses:
+        "200":
+          description: Lista de Tareas
+          content:
+            application/json:
+              example:
+                name: "John Doe"
+                email: "johndoe@email.com"
+                role: "usuario"
+                createdAt: "2024-11-10T12:00:00Z"
+        "403":
+          description: No autorizado
+        "404":
+          description: No existen tareas
+        "500":
+          description: Error del servidor
