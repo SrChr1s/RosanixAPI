@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.32-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         11.5.2-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             12.6.0.6765
+-- HeidiSQL Versión:             12.8.0.6908
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -16,135 +16,32 @@
 
 
 -- Volcando estructura de base de datos para rosanix
-DROP DATABASE IF EXISTS `rosanix`;
-CREATE DATABASE IF NOT EXISTS `rosanix` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci */;
+CREATE DATABASE IF NOT EXISTS `rosanix` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
 USE `rosanix`;
 
--- Volcando estructura para tabla rosanix.brands
-CREATE TABLE IF NOT EXISTS `brands` (
+-- Volcando estructura para tabla rosanix.tasks
+CREATE TABLE IF NOT EXISTS `tasks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.brands: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.carts
-CREATE TABLE IF NOT EXISTS `carts` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.carts: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.cart_items
-CREATE TABLE IF NOT EXISTS `cart_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cart_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cart_id` (`cart_id`),
-  KEY `product_id` (`product_id`),
-  CONSTRAINT `cart_items_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`),
-  CONSTRAINT `cart_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.cart_items: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.categories
-CREATE TABLE IF NOT EXISTS `categories` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `descr` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.categories: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.orders
-CREATE TABLE IF NOT EXISTS `orders` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `total` decimal(10,2) NOT NULL,
-  `shipping_address` varchar(255) NOT NULL,
-  `order_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `state` enum('pending','sent','delivered') DEFAULT 'pending',
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `expiresIn` datetime DEFAULT NULL,
+  `state` enum('pendiente','completada') NOT NULL DEFAULT 'pendiente',
+  `priority` enum('baja','media','alta') NOT NULL DEFAULT 'media',
+  `userId` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  KEY `userId` (`userId`),
+  CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Volcando datos para la tabla rosanix.orders: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.order_items
-CREATE TABLE IF NOT EXISTS `order_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`),
-  KEY `product_id` (`product_id`),
-  CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.order_items: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.pc_builds
-CREATE TABLE IF NOT EXISTS `pc_builds` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `pc_builds_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.pc_builds: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.pc_build_items
-CREATE TABLE IF NOT EXISTS `pc_build_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `pc_build_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pc_build_id` (`pc_build_id`),
-  KEY `product_id` (`product_id`),
-  CONSTRAINT `pc_build_items_ibfk_1` FOREIGN KEY (`pc_build_id`) REFERENCES `pc_builds` (`id`),
-  CONSTRAINT `pc_build_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.pc_build_items: ~0 rows (aproximadamente)
-
--- Volcando estructura para tabla rosanix.products
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `descr` text DEFAULT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `stock` int(11) DEFAULT 0,
-  `img_url` varchar(255) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL,
-  `brand_id` int(11) DEFAULT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `category_id` (`category_id`),
-  KEY `brand_id` (`brand_id`),
-  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
-  CONSTRAINT `products_ibfk_2` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
--- Volcando datos para la tabla rosanix.products: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla rosanix.tasks: ~6 rows (aproximadamente)
+INSERT INTO `tasks` (`id`, `title`, `descr`, `createdAt`, `expiresIn`, `state`, `priority`, `userId`) VALUES
+	(1, 'Tarea 1', 'Yep', '2024-11-13 11:53:00', NULL, 'pendiente', 'media', 1),
+	(3, 'Tarea 3', 'It works', '2024-11-13 11:55:39', NULL, 'pendiente', 'baja', 1),
+	(5, 'Tarea 4', 'Do something', '2024-11-13 12:01:26', '2024-11-20 00:00:00', 'pendiente', 'alta', 1),
+	(6, 'Tarea 5', 'Let\'s see', '2024-11-13 12:04:23', NULL, 'pendiente', 'alta', 1),
+	(7, 'Tarea 6', NULL, '2024-11-13 12:22:24', NULL, 'pendiente', 'media', 1),
+	(8, 'Tarea 7', NULL, '2024-11-13 12:23:04', NULL, 'pendiente', 'media', 1);
 
 -- Volcando estructura para tabla rosanix.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -152,18 +49,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `passw` varchar(255) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `role` enum('admin','client') NOT NULL DEFAULT 'client',
-  `creation_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `role` enum('admin','usuario') NOT NULL DEFAULT 'usuario',
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `active` tinyint(1) NOT NULL DEFAULT 0,
+  `codeEmail` char(36) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Volcando datos para la tabla rosanix.users: ~1 rows (aproximadamente)
-INSERT INTO `users` (`id`, `name`, `email`, `passw`, `address`, `phone`, `role`, `creation_date`) VALUES
-	(1, 'CHRISTIAN SALAZAR', 'srchr1s@email.com', '$2a$12$ltUFgmXz1hLSIEaQJ6s4j.Qqlnt6Fg0.96V0EUOU26kC9knAlkBvu', NULL, NULL, 'admin', '2024-10-12 07:34:58');
+-- Volcando datos para la tabla rosanix.users: ~3 rows (aproximadamente)
+INSERT INTO `users` (`id`, `name`, `email`, `passw`, `role`, `createdAt`, `active`, `codeEmail`) VALUES
+	(1, 'Christian', 'c.salazar.vzla@gmail.com', '$2a$12$qci4XLaoCTcScES2HB/HT.j/0UPqKhVe08rBkAyvks2DCF7gwk1V2', 'usuario', '2024-11-13 11:50:25', 1, NULL),
+	(2, 'Admin', 'thelonelinessofhades@gmail.com', '$2a$12$DDzNsJnJg6JFiRR.w5G9IO8RiRRSZDIj/OEp45eJkxqCHVmzZB9wS', 'admin', '2024-11-13 13:09:22', 1, ''),
+	(3, 'Usuario test', 'test@test.com', '$2a$12$iETqaSbyouqrAolg4Eoewe99etsPeAiBzG56Jauar44rT/n8xOIOG', 'usuario', '2024-11-13 13:55:39', 0, '4adbb40e-f4e2-469f-bf17-e4ed2f425d5a'),
+	(4, 'Usuario', 'testing@test.com', '$2a$12$HjnPaRiz3kVxNnR8s8qLwugCtioWx9Scdbm.NGZ/dzUg1EkyOU9y.', 'usuario', '2024-11-13 14:00:44', 1, NULL),
+	(5, 'Administrador', 'admin@test.com', '$2a$12$fafz2Gsmi2XFoNhJDAx.JOc64hYlf19kKbskZdrJoMwefqJPS7zci', 'admin', '2024-11-13 14:02:05', 1, NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
