@@ -37,14 +37,14 @@ export const createOne = async (req, res) => {
 };
 
 export const updateOne = async (req, res) => {
-  const { title, descr, exp, priority } = req.body;
+  const { title, descr, expiresIn, priority } = req.body;
 
   try {
     const taskUpdated = await task.update(
       {
         title,
-        descr,
-        expiresIn: exp,
+        descr: descr ? descr : null,
+        expiresIn: expiresIn ? expiresIn : null,
         priority,
       },
       {

@@ -7,6 +7,7 @@ import { mysql } from "./config/database.cfg.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { usersRouter } from "./routes/users.routes.js";
 import { tasksRouter } from "./routes/tasks.routes.js";
+import { adminRouter } from "./routes/admin.routes.js";
 
 const server = express();
 const puerto = 4000;
@@ -35,6 +36,7 @@ try {
 server.use("/api", authRouter);
 server.use("/api", usersRouter);
 server.use("/api", tasksRouter);
+server.use("/api", adminRouter);
 
 // Rehacer la db ***DROPEA TODO***
 // await mysql.sync({ force: true });
