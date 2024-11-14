@@ -28,6 +28,7 @@ components:
           example: 1
         title:
           type: string
+          maxLength: 30
           example: "Tarea title"
         descr:
           type: string
