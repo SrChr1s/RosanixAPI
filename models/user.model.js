@@ -13,11 +13,20 @@ export const user = mysql.define(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        min: 3,
+        max: 30,
+        isAlpha: true,
+      },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+      validate: {
+        max: 100,
+        isEmail: true,
+      },
     },
     passw: {
       type: DataTypes.STRING,

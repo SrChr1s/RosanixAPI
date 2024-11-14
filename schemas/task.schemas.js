@@ -7,5 +7,5 @@ export const taskSchema = z.object({
   descr: z
     .string({ required_error: "Description must be a string" })
     .optional(),
-  exp: z.string().datetime().optional(),
+  expiresIn: z.string().datetime().optional(),
 });

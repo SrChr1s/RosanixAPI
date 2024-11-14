@@ -13,6 +13,9 @@ export const task = mysql.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        max: 30,
+      },
     },
     descr: {
       type: DataTypes.TEXT,
