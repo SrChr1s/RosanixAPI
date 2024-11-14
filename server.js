@@ -43,7 +43,14 @@ server.use("/api", adminRouter);
 
 await mysql.sync();
 
-server.use("/api/v1/docs", swaggerUI.serve, swaggerUI.setup(specs));
+server.use(
+  "/api/v1/docs",
+  swaggerUI.serve,
+  swaggerUI.setup(specs, {
+    customSiteTitle: "Rosanix API",
+    customCss: ".swagger-ui .auth-wrapper { display: none }",
+  })
+);
 
 server.listen(puerto, ip, () => {
   console.log(`\nServer listening on http://localhost:${puerto}/api/\n`);
