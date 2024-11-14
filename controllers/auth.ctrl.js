@@ -19,6 +19,9 @@ export const login = async (req, res) => {
 
     if (!match) return res.status(400).json(["Credenciales invalidas."]);
 
+    if (!userFound.active)
+      return res.status(403).json(["Su cuenta se encuentra inactiva"]);
+
     const token = await genToken(userFound);
 
     res.cookie("access_token", token);

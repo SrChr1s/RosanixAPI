@@ -14,7 +14,8 @@ export const regisSchema = z.object({
   name: z
     .string({ required_error: "Name is required." })
     .min(3, "Name must be at least 3 characters.")
-    .max(30, "Name cannot exceed 30 characters."),
+    .max(30, "Name cannot exceed 30 characters.")
+    .regex(/^[A-Za-z]+$/i, "Only letters are allowed"),
   email: z
     .string({ required_error: "Email is required." })
     .email({ message: "Invalid email." })

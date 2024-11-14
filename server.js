@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import swaggerUI from "swagger-ui-express";
 import specs from "./swagger/swagger.js";
 import { mysql } from "./config/database.cfg.js";
+import { user } from "./models/user.model.js";
+import { genHash } from "./services/auth.services.js";
 import { authRouter } from "./routes/auth.routes.js";
 import { usersRouter } from "./routes/users.routes.js";
 import { tasksRouter } from "./routes/tasks.routes.js";
@@ -42,6 +44,20 @@ server.use("/api", adminRouter);
 // await mysql.sync({ force: true });
 
 await mysql.sync();
+
+await user.findOrCreate({
+  where: {
+    id: 1,
+  },
+  defaults: {
+    name: "Administrador",
+    email: "admin@rosanix.com",
+    passw: await genHash("rosanixadmin"),
+    role: 1,
+    active: 1,
+    codeEmail: null,
+  },
+});
 
 server.use(
   "/api/v1/docs",

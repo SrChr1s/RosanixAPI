@@ -3,7 +3,7 @@ import { user } from "../models/user.model.js";
 import { genHash } from "../services/auth.services.js";
 
 export const getAllUsers = async (req, res) => {
-  const users = await user.findAll();
+  const users = await user.findAll({ where: { role: 2 } });
 
   if (!users) return res.status(404).json(["No existen usuarios"]);
 
