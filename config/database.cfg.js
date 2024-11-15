@@ -9,7 +9,8 @@ export const mysql = new Sequelize(
   process.env.DBPASS,
   {
     dialect: "mysql",
-    host: "localhost",
+    host: process.env.HOST || "localhost",
+    port: process.env.HOST || 3306,
     logging: false,
   }
 );

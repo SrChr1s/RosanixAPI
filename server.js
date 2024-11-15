@@ -12,7 +12,7 @@ import { tasksRouter } from "./routes/tasks.routes.js";
 import { adminRouter } from "./routes/admin.routes.js";
 
 const server = express();
-const puerto = 4000;
+const puerto = process.env.PORT || 4000;
 const ip = "localhost";
 
 server.use(
