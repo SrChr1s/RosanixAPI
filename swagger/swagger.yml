@@ -171,6 +171,32 @@ paths:
       responses:
         "204":
           description: Cierre de sesión realizado con éxito
+  /api/forgotpass:
+    post:
+      tags:
+        - Auth
+      summary: Envia un código al correo para habilitar el reseteo de la contraseña
+      responses:
+        "204":
+          description: Código enviado
+  /api/testcode:
+    post:
+      tags:
+        - Auth
+      summary: Valida que el código enviado al correo sea el mismo que el proporcionado por el usuario en su intento de resetear la contraseña
+      responses:
+        "204":
+          description: Código validado
+        "400":
+          description: Código incorrecto
+  /api/resetpass:
+    post:
+      tags:
+        - Auth
+      summary: Realiza el cambio de contraseña anterior olvidada por la nueva
+      responses:
+        "204":
+          description: Contraseña cambiada
   /api/auth/verify-token:
     get:
       tags:
