@@ -23,8 +23,8 @@ export const createOne = async (req, res) => {
   try {
     const newTask = await task.create({
       title,
-      descr,
-      expiresIn,
+      descr: descr ? descr : null,
+      expiresIn: expiresIn ? expiresIn : null,
       priority,
       userId: req.user.id,
     });
