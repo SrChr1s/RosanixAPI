@@ -13,11 +13,9 @@ import { adminRouter } from "./routes/admin.routes.js";
 
 const server = express();
 const puerto = process.env.PORT || 4000;
-const ip = "localhost";
 
 server.use(
   cors({
-    origin: `http://${ip}:5173`,
     credentials: true,
   })
 );
@@ -68,6 +66,6 @@ server.use(
   })
 );
 
-server.listen(puerto, ip, () => {
-  console.log(`\nServer listening on http://localhost:${puerto}/api/\n`);
+server.listen(puerto, () => {
+  console.log(`\nServer listening on ${puerto}\n`);
 });
