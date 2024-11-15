@@ -40,7 +40,7 @@ server.use("/api", tasksRouter);
 server.use("/api", adminRouter);
 
 // Rehacer la db ***DROPEA TODO***
-await mysql.sync({ force: true });
+// await mysql.sync({ force: true });
 
 await mysql.sync();
 
