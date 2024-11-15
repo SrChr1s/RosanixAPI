@@ -93,6 +93,9 @@ components:
           type: string
           format: uuid
           example: "444792de-1209-4ffb-96fc-956012baaf9e"
+        codePass:
+          type: integer
+          example: 123456
       required:
         - name
         - email
@@ -176,6 +179,12 @@ paths:
       tags:
         - Auth
       summary: Envia un código al correo para habilitar el reseteo de la contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              email: "email@email.com"
       responses:
         "204":
           description: Código enviado
@@ -184,6 +193,13 @@ paths:
       tags:
         - Auth
       summary: Valida que el código enviado al correo sea el mismo que el proporcionado por el usuario en su intento de resetear la contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              email: "email@email.com"
+              code: "123456"
       responses:
         "204":
           description: Código validado
@@ -194,6 +210,13 @@ paths:
       tags:
         - Auth
       summary: Realiza el cambio de contraseña anterior olvidada por la nueva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              email: "email@email.com"
+              newPassw: "newpassword"
       responses:
         "204":
           description: Contraseña cambiada
