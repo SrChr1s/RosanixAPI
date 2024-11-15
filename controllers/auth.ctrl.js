@@ -27,7 +27,7 @@ export const login = async (req, res) => {
 
     const token = await genToken(userFound, remember);
 
-    res.cookie("access_token", token);
+    res.cookie("access_token", token, { sameSite: "none" });
 
     res.status(200).json({
       name: userFound.name,
