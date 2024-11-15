@@ -10,7 +10,7 @@ export const mysql = new Sequelize(
   {
     dialect: "mysql",
     host: process.env.HOST || "localhost",
-    port: process.env.HOST || 3306,
+    port: process.env.PORT || 3306,
     logging: false,
   }
 );
