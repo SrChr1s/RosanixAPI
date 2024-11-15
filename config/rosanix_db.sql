@@ -2,7 +2,7 @@
 -- Host:                         127.0.0.1
 -- Versión del servidor:         11.5.2-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             12.8.0.6908
+-- HeidiSQL Versión:             12.6.0.6765
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,16 +32,15 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Volcando datos para la tabla rosanix.tasks: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla rosanix.tasks: ~5 rows (aproximadamente)
 INSERT INTO `tasks` (`id`, `title`, `descr`, `createdAt`, `expiresIn`, `state`, `priority`, `userId`) VALUES
-	(1, 'Tarea 1', 'Yep', '2024-11-13 11:53:00', NULL, 'pendiente', 'media', 1),
-	(3, 'Tarea 3', 'It works', '2024-11-13 11:55:39', NULL, 'pendiente', 'baja', 1),
-	(5, 'Tarea 4', 'Do something', '2024-11-13 12:01:26', '2024-11-20 00:00:00', 'pendiente', 'alta', 1),
-	(6, 'Tarea 5', 'Let\'s see', '2024-11-13 12:04:23', NULL, 'pendiente', 'alta', 1),
-	(7, 'Tarea 6', NULL, '2024-11-13 12:22:24', NULL, 'pendiente', 'media', 1),
-	(8, 'Tarea 7', NULL, '2024-11-13 12:23:04', NULL, 'pendiente', 'media', 1);
+	(2, 'Tarea 2', NULL, '2024-11-15 05:44:36', NULL, 'completada', 'media', 2),
+	(4, 'asdasd', NULL, '2024-11-15 05:52:48', NULL, 'pendiente', 'media', 2),
+	(5, 'asdasdasdasd', NULL, '2024-11-15 05:52:56', NULL, 'pendiente', 'media', 2),
+	(6, 'asdasd', NULL, '2024-11-15 06:45:08', NULL, 'pendiente', 'baja', 2),
+	(7, 'asdasd', NULL, '2024-11-15 07:03:35', NULL, 'pendiente', 'alta', 2);
 
 -- Volcando estructura para tabla rosanix.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -53,17 +52,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   `active` tinyint(1) NOT NULL DEFAULT 0,
   `codeEmail` char(36) CHARACTER SET latin1 COLLATE latin1_bin DEFAULT NULL,
+  `codePass` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Volcando datos para la tabla rosanix.users: ~3 rows (aproximadamente)
-INSERT INTO `users` (`id`, `name`, `email`, `passw`, `role`, `createdAt`, `active`, `codeEmail`) VALUES
-	(1, 'Christian', 'c.salazar.vzla@gmail.com', '$2a$12$qci4XLaoCTcScES2HB/HT.j/0UPqKhVe08rBkAyvks2DCF7gwk1V2', 'usuario', '2024-11-13 11:50:25', 1, NULL),
-	(2, 'Admin', 'thelonelinessofhades@gmail.com', '$2a$12$DDzNsJnJg6JFiRR.w5G9IO8RiRRSZDIj/OEp45eJkxqCHVmzZB9wS', 'admin', '2024-11-13 13:09:22', 1, ''),
-	(3, 'Usuario test', 'test@test.com', '$2a$12$iETqaSbyouqrAolg4Eoewe99etsPeAiBzG56Jauar44rT/n8xOIOG', 'usuario', '2024-11-13 13:55:39', 0, '4adbb40e-f4e2-469f-bf17-e4ed2f425d5a'),
-	(4, 'Usuario', 'testing@test.com', '$2a$12$HjnPaRiz3kVxNnR8s8qLwugCtioWx9Scdbm.NGZ/dzUg1EkyOU9y.', 'usuario', '2024-11-13 14:00:44', 1, NULL),
-	(5, 'Administrador', 'admin@test.com', '$2a$12$fafz2Gsmi2XFoNhJDAx.JOc64hYlf19kKbskZdrJoMwefqJPS7zci', 'admin', '2024-11-13 14:02:05', 1, NULL);
+-- Volcando datos para la tabla rosanix.users: ~2 rows (aproximadamente)
+INSERT INTO `users` (`id`, `name`, `email`, `passw`, `role`, `createdAt`, `active`, `codeEmail`, `codePass`) VALUES
+	(1, 'Administrador', 'admin@rosanix.com', '$2a$12$CclEkpW.0ydBI4s4gUZXqe.Xo6tq2j20mbM9K6VcL3ZxXTxxeeuJe', 'admin', '2024-11-15 04:30:20', 1, NULL, NULL),
+	(2, 'Christian', 'c.salazar.vzla@gmail.com', '$2a$12$V/VAJgCryJTIqDiPE1kcJ.JChq51VdP0Na3FpWNfo4UqQUeQr.kxy', 'usuario', '2024-11-15 04:42:51', 1, NULL, NULL);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
