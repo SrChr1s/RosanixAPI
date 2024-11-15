@@ -622,7 +622,7 @@ const htmlTemplatePass = (code) => {
                       >
                         <p style="margin: 0; text-align: center">
                           Si vos no tenés una cuenta en
-                          <a href="http://localhost:5173">Rosanix</a>, podés borrar este
+                          <a href="https://rosanix-production.up.railway.app/">Rosanix</a>, podés borrar este
                           correo sin problema.
                         </p>
                       </td>
@@ -756,7 +756,7 @@ export const sendConfirmationEmail = async (email, code) => {
     html: htmlTemplate(
       "Confirma tu Correo",
       "activar tu cuenta",
-      `http://localhost:4000/api/confirm-account/${code}`,
+      `https://rosanixapi-production.up.railway.app/api/confirm-account/${code}`,
       "necesitamos que confirmes tu correo para poder activar tu cuenta"
     ),
   };
@@ -786,7 +786,7 @@ export const sendChangeEmail = async (email, idUser) => {
     html: htmlTemplate(
       "Cambia tu Correo",
       "realizar el cambio en tu cuenta",
-      `http://localhost:4000/api/change-email/${idUser}/${email}`,
+      `https://rosanixapi-production.up.railway.app/api/change-email/${idUser}/${email}`,
       "nos ha llegado una petición para cambiar el correo de tu cuenta"
     ),
   };
