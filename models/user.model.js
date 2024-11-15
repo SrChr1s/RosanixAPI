@@ -16,7 +16,6 @@ export const user = mysql.define(
       validate: {
         min: 3,
         max: 30,
-        isAlpha: true,
       },
     },
     email: {
