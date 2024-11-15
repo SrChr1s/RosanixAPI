@@ -19,7 +19,7 @@ export const confirmEmail = async (req, res) => {
     if (!userActivated)
       return res.status(404).json(["No hemos encontrado esta cuenta"]);
 
-    res.redirect(301, "http://localhost:5173/login");
+    res.redirect(301, "https://rosanix-production.up.railway.app/login");
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -100,7 +100,7 @@ export const changeEmail = async (req, res) => {
     if (!userUpdated)
       return res.status(404).json(["No hemos encontrado esta cuenta"]);
 
-    res.redirect(301, "http://localhost:5173/home");
+    res.redirect(301, "https://rosanix-production.up.railway.app/home");
   } catch (err) {
     console.log(err);
     res.status(500);
