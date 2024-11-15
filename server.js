@@ -16,7 +16,7 @@ const puerto = process.env.PORT || 4000;
 
 server.use(
   cors({
-    origin: "http://rosanix.railway.internal/8080",
+    origin: "https://rosanix-production.up.railway.app",
     credentials: true,
   })
 );
