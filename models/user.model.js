@@ -52,6 +52,10 @@ export const user = mysql.define(
       defaultValue: DataTypes.UUIDV4,
       allowNull: true,
     },
+    codePass: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   { timestamps: false }
 );

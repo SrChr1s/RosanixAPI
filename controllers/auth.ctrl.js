@@ -5,10 +5,13 @@ import {
   genToken,
   verToken,
 } from "../services/auth.services.js";
-import { sendConfirmationEmail } from "../services/nodemailer.js";
+import {
+  sendConfirmationEmail,
+  sendForgotPass,
+} from "../services/nodemailer.js";
 
 export const login = async (req, res) => {
-  const { email, passw } = req.body;
+  const { email, passw, remember } = req.body;
 
   const userFound = await user.findOne({ where: { email } });
 
@@ -22,7 +25,7 @@ export const login = async (req, res) => {
     if (!userFound.active)
       return res.status(403).json(["Su cuenta se encuentra inactiva"]);
 
-    const token = await genToken(userFound);
+    const token = await genToken(userFound, remember);
 
     res.cookie("access_token", token);
 
@@ -75,6 +78,60 @@ export const register = async (req, res) => {
 
 export const logout = async (req, res) => {
   res.cookie("access_token", "", { expires: new Date(0) });
+  res.sendStatus(204);
+};
+
+export const forgotPass = async (req, res) => {
+  const { email } = req.body;
+
+  const userFound = await user.findOne({ where: { email } });
+
+  if (userFound) {
+    const code = Math.round(Math.random() * 999999);
+    await user.update(
+      { codePass: code },
+      {
+        where: {
+          id: userFound.id,
+        },
+      }
+    );
+    sendForgotPass(email, code);
+  }
+  res.sendStatus(204);
+};
+
+export const testCode = async (req, res) => {
+  const { email, code } = req.body;
+
+  const userFound = await user.findOne({ where: { email } });
+
+  if (userFound) {
+    const match = code == userFound.codePass;
+
+    if (!match) {
+      return res.status(400).json(["Código incorrecto"]);
+    }
+
+    res.sendStatus(204);
+  }
+};
+
+export const resetPass = async (req, res) => {
+  const { email, newPassw } = req.body;
+
+  const userFound = await user.findOne({ where: { email } });
+
+  if (userFound) {
+    await user.update(
+      { passw: await genHash(newPassw), codePass: null },
+      {
+        where: {
+          id: userFound.id,
+        },
+      }
+    );
+  }
   res.sendStatus(204);
 };
 
